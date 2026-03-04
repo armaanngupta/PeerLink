@@ -77,10 +77,10 @@ public class FileController {
       public void handle(HttpExchange exchange) throws IOException {
          Headers headers = exchange.getResponseHeaders();
          headers.add("Access-Control-Allow-Origin", "*");
-         if(exchange.getRequestMethod().equalsIgnoreCase("POST")) {
+         if(!exchange.getRequestMethod().equalsIgnoreCase("POST")) {
             String response = "Method not allowed";
             exchange.sendResponseHeaders(405, response.getBytes().length);
-            try(OutputStream oos = exchange.getResponseBody()) {
+            try(OutputStream oos = exchange.getResponseBody()){
                oos.write(response.getBytes());
             }
             return;
@@ -250,8 +250,8 @@ public class FileController {
                return null;
             }
 
-            int filenameEnd = dataAsString.indexOf("\"", filenameStart);
             filenameStart += filenameMarker.length();
+            int filenameEnd = dataAsString.indexOf("\"", filenameStart);
             String fileName = dataAsString.substring(filenameStart, filenameEnd);
 
             String contentTypeMarker = "Content-Type: ";

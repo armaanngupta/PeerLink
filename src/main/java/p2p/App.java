@@ -17,9 +17,6 @@ public class App {
                      }
              )
           );
-//
-//          System.out.println("Press enter to stop the server");
-//          System.in.read();
        }catch (Exception e){
           System.out.println("Failed to start the server on port 8088");
           e.printStackTrace();
