@@ -95,4 +95,3 @@ docker-compose up --build
    ./vps-setup.sh
    ```
 3. Make sure to **open Port 80 (HTTP)** in your AWS Security Group.
-4. **Crucial:** Open the **Custom TCP Port Range `49152-65535`** in your cloud provider's firewall/Security Group to allow the P2P file transfers to connect directly.
