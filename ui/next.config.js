@@ -9,11 +9,15 @@ const nextConfig = {
         destination: 'http://localhost:8080/upload',
       },
       {
-        source: '/api/download/:port',
-        destination: 'http://localhost:8080/download/:port',
+        source: '/api/download/:code',
+        destination: 'http://localhost:8080/download/:code',
+      },
+      {
+        source: '/api/health',
+        destination: 'http://localhost:8080/health',
       },
     ];
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
