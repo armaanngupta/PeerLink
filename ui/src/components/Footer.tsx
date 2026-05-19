@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FiGithub } from 'react-icons/fi';
 
-const GITHUB_URL = 'https://github.com/your-username/peerlink';
+const GITHUB_URL = 'https://github.com/armaanngupta/PeerLink';
 
 export default function Footer() {
   return (

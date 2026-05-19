@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { FiGithub } from 'react-icons/fi';
 
-const GITHUB_URL = 'https://github.com/your-username/peerlink';
+const GITHUB_URL = 'https://github.com/armaanngupta/PeerLink';
 
 export default function Header() {
   const pathname = usePathname();
