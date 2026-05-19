@@ -8,20 +8,16 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
-        },
+        bg:      '#0c0c0e',
+        surface: '#111115',
+        card:    '#18181d',
+        border:  'rgba(255,255,255,0.07)',
+      },
+      backgroundImage: {
+        'hero-glow': 'radial-gradient(ellipse 80% 50% at 50% -10%, rgba(249,115,22,0.14) 0%, transparent 60%)',
+        'card-glow':  'radial-gradient(ellipse 60% 40% at 50% 0%, rgba(249,115,22,0.09) 0%, transparent 70%)',
       },
     },
   },
   plugins: [],
-}
+};
