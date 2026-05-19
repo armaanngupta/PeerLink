@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:8080';
+
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
@@ -6,15 +8,15 @@ const nextConfig = {
     return [
       {
         source: '/api/upload',
-        destination: 'http://localhost:8080/upload',
+        destination: `${BACKEND_URL}/upload`,
       },
       {
         source: '/api/download/:code',
-        destination: 'http://localhost:8080/download/:code',
+        destination: `${BACKEND_URL}/download/:code`,
       },
       {
         source: '/api/health',
-        destination: 'http://localhost:8080/health',
+        destination: `${BACKEND_URL}/health`,
       },
     ];
   },
