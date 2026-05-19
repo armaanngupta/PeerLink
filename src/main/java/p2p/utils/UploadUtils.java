@@ -1,15 +1,17 @@
 package p2p.utils;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class UploadUtils {
+    private static final String SLUG_CHARS = "abcdefghijklmnopqrstuvwxyz0123456789";
+    private static final int SLUG_LENGTH = 8;
+    private static final SecureRandom RANDOM = new SecureRandom();
 
-   public static int generateCode() {
-      int DYNAMIC_STARTING_PORT = 49152;
-      int DYNAMIC_ENDING_PORT = 65535;
-
-      Random random = new Random();
-      return random.nextInt(DYNAMIC_ENDING_PORT-DYNAMIC_STARTING_PORT + 1) + DYNAMIC_STARTING_PORT;
-   }
-
+    public static String generateSlug() {
+        StringBuilder sb = new StringBuilder(SLUG_LENGTH);
+        for (int i = 0; i < SLUG_LENGTH; i++) {
+            sb.append(SLUG_CHARS.charAt(RANDOM.nextInt(SLUG_CHARS.length())));
+        }
+        return sb.toString();
+    }
 }
