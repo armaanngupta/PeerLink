@@ -6,18 +6,24 @@ import p2p.model.TransferRecord;
 import p2p.utils.UploadUtils;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Filesharer {
     private static final Logger logger = LoggerFactory.getLogger(Filesharer.class);
+
+    private static final Path STATS_FILE = Path.of(
+            System.getProperty("peerlink.statsDir", "data"), "stats.txt");
 
     private final ConcurrentHashMap<String, TransferRecord> registry = new ConcurrentHashMap<>();
     // Files removed from the registry (max downloads reached) but kept briefly for in-flight requests
     private final ConcurrentHashMap<String, Instant> pendingDeletions = new ConcurrentHashMap<>();
     private final ScheduledExecutorService scheduler;
+    private final AtomicLong totalUploads = new AtomicLong(loadTotalUploads());
 
     public Filesharer() {
         scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
@@ -38,8 +44,34 @@ public class Filesharer {
 
         TransferRecord record = new TransferRecord(code, filePath, originalFilename);
         registry.put(code, record);
+        long total = totalUploads.incrementAndGet();
+        persistTotalUploads(total);
         logger.info("File registered: code={} name={}", code, originalFilename);
         return code;
+    }
+
+    public long getTotalUploads() {
+        return totalUploads.get();
+    }
+
+    private long loadTotalUploads() {
+        try {
+            if (Files.exists(STATS_FILE)) {
+                return Long.parseLong(Files.readString(STATS_FILE, StandardCharsets.UTF_8).trim());
+            }
+        } catch (Exception e) {
+            logger.warn("Could not read stats file: {}", e.getMessage());
+        }
+        return 232L;
+    }
+
+    private void persistTotalUploads(long count) {
+        try {
+            Files.createDirectories(STATS_FILE.getParent());
+            Files.writeString(STATS_FILE, String.valueOf(count), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            logger.warn("Could not write stats file: {}", e.getMessage());
+        }
     }
 
     public TransferRecord getRecord(String code) {

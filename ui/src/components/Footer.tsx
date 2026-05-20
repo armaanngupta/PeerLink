@@ -1,8 +1,35 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { FiGithub } from 'react-icons/fi';
+import { useState, useEffect } from 'react';
 
 const GITHUB_URL = 'https://github.com/armaanngupta/PeerLink';
+
+function FileCount() {
+  const [count, setCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchCount = () => {
+      fetch('/api/stats')
+        .then(r => r.json())
+        .then(d => setCount(d.totalFilesShared))
+        .catch(() => {});
+    };
+    fetchCount();
+    const id = setInterval(fetchCount, 30_000);
+    return () => clearInterval(id);
+  }, []);
+
+  if (count == null) return null;
+
+  return (
+    <span className="text-zinc-600 text-xs tabular-nums">
+      {count.toLocaleString()} files shared
+    </span>
+  );
+}
 
 export default function Footer() {
   return (
@@ -20,6 +47,7 @@ export default function Footer() {
           />
           <span className="text-sm font-semibold text-white">PeerLink</span>
           <span className="text-zinc-600 text-sm">— end-to-end encrypted file sharing</span>
+          <FileCount />
         </div>
 
         {/* Links */}

@@ -49,6 +49,7 @@ public class FileController {
         server.createContext("/upload",   new UploadHandler());
         server.createContext("/download", new DownloadHandler());
         server.createContext("/health",   new HealthHandler());
+        server.createContext("/stats",    new StatsHandler());
         server.createContext("/",         new CORSHandler());
         server.setExecutor(executorService);
     }
@@ -127,6 +128,15 @@ public class FileController {
             sendJson(ex, 200, String.format(
                     "{\"status\":\"ok\",\"uptime\":%d,\"activeTransfers\":%d,\"version\":\"2.0\"}",
                     uptime, filesharer.getActiveTransferCount()));
+        }
+    }
+
+    private class StatsHandler implements HttpHandler {
+        @Override public void handle(HttpExchange ex) throws IOException {
+            addCorsHeaders(ex.getResponseHeaders());
+            if (handlePreflight(ex)) return;
+            sendJson(ex, 200, String.format(
+                    "{\"totalFilesShared\":%d}", filesharer.getTotalUploads()));
         }
     }
 

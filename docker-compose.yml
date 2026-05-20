@@ -1,7 +1,7 @@
 version: '3'
 services:
   backend:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile.backend
     ports:
@@ -12,6 +12,8 @@ services:
     # For production, you might want to add port mappings for the dynamic ports
     # ports:
     #   - "49152-65535:49152-65535"
+    volumes:
+      - peerlink-stats:/app/data
 
   frontend:
     build:
@@ -23,3 +25,6 @@ services:
       - NEXT_PUBLIC_API_URL=http://localhost:8080
     depends_on:
       - backend
+
+volumes:
+  peerlink-stats:
